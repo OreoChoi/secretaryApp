@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/reUseTxtView1"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginBottom="120dp"
+        android:textSize="23dp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        android:text="안녕하세요" />
+
+    <ImageView
+        android:id="@+id/exeImgView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="250dp"
+        app:srcCompat="@android:drawable/ic_menu_compass" />
+
+    <LinearLayout
+        android:id="@+id/coverLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffa2f4ec"
+        android:visibility="visible"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/rotationImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="280dp"
+            app:srcCompat="@android:drawable/ic_menu_compass" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="23dp">
+
+            <TextView
+                android:id="@+id/coverTxtView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="Secretary를 찾아주신걸 감사합니다"
+                android:textSize="23dp"
+                android:textStyle="bold"
+                android:visibility="visible" />
+        </FrameLayout>
+
+    </LinearLayout>
+</FrameLayout>
