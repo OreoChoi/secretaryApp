@@ -31,7 +31,7 @@
         android:id="@+id/coverLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ffa2f4ec"
+        android:background="#ff0fEAD3"
         android:visibility="visible"
         android:orientation="vertical">
 
