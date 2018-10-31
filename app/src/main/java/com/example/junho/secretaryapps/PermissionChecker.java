@@ -23,9 +23,8 @@ import android.widget.Toast;
  *
  * */
 
-public class PerChecker {
+public class PermissionChecker {
     public static final int CHECKER = PackageManager.PERMISSION_GRANTED;
-
 
     public boolean checkPermission(Context c,Activity activity) {
         Context context = c.getApplicationContext();
@@ -46,13 +45,11 @@ public class PerChecker {
                     ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.READ_EXTERNAL_STORAGE) &&
                     ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION)) {
 
-                Toast.makeText(context,"UI표시 여부확인",Toast.LENGTH_SHORT).show();
+                Toast.makeText(context,"권한이 없습니다. 앱 정보에서 직접 권한을 획득 해야 합니다",Toast.LENGTH_SHORT).show();
 
             } else {
                 ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.RECORD_AUDIO,
                         Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-
-                Toast.makeText(context,"필수 권한이 허용되지 않았습니다. 직접 허용해 주세요",Toast.LENGTH_SHORT).show();
 
             }
 
