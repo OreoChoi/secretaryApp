@@ -1,4 +1,4 @@
-package com.example.junho.secretaryapps;
+package com.example.junho.secretaryapps.interact;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -13,7 +13,7 @@ public class InteractSpeech {
     Context context;
     TextToSpeech tts;
 
-    InteractSpeech(Context context,TextToSpeech tts){
+    public InteractSpeech(Context context,TextToSpeech tts){
         this.context = context;
         this.tts = tts;
     }

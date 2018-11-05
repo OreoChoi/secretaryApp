@@ -1,4 +1,4 @@
-package com.example.junho.secretaryapps;
+package com.example.junho.secretaryapps.interact;
 
 import android.os.Handler;
 import android.os.Message;
@@ -21,8 +21,8 @@ import android.widget.TextView;
  * */
 public class InteractAnim {
     AlphaAnimation alphaReverse = new AlphaAnimation(1, 0);
-    private static final int PLAYING_TIME = 2000;
-    private static final int NEXT_DELAY_TIME = 5000;
+    private static final int PLAYING_TIME = 1000;
+    private static final int NEXT_DELAY_TIME = 3000;
 
     public void alpha(TextView t) {
         alphaReverse.setDuration(PLAYING_TIME);

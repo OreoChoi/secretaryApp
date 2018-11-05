@@ -1,20 +1,14 @@
-package com.example.junho.secretaryapps;
+package com.example.junho.secretaryapps.permission;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.HashMap;
-import java.util.Locale;
+import com.example.junho.secretaryapps.R;
 
 public class PermissionActivity extends AppCompatActivity {
 

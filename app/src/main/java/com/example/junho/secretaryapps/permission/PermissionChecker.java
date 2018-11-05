@@ -1,4 +1,4 @@
-package com.example.junho.secretaryapps;
+package com.example.junho.secretaryapps.permission;
 
 import android.Manifest;
 import android.app.Activity;
@@ -26,30 +26,32 @@ import android.widget.Toast;
 public class PermissionChecker {
     public static final int CHECKER = PackageManager.PERMISSION_GRANTED;
 
-    public boolean checkPermission(Context c,Activity activity) {
-        Context context = c.getApplicationContext();
 
-        int permissionAudio = ContextCompat.checkSelfPermission(context,Manifest.permission.RECORD_AUDIO);
+    public boolean checkPermission(Context c,Activity activity) {
+        Context context = c;
+
+        int permissionAudio = ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO);
         int permissionStorage = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE);
         int permissionLocation = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION);
+        int permissionInternet = ContextCompat.checkSelfPermission(context, Manifest.permission.INTERNET);
 
-        if (permissionAudio == CHECKER && permissionStorage == CHECKER && permissionLocation == CHECKER) {
-
+        if (permissionAudio == CHECKER && permissionStorage == CHECKER &&
+            permissionLocation == CHECKER && permissionInternet == CHECKER) {
             return true;
-
         } else {
 
-            //Intent intent = new Intent(this,);
-
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.RECORD_AUDIO) &&
-                    ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.READ_EXTERNAL_STORAGE) &&
-                    ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.READ_EXTERNAL_STORAGE) &&
+                ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION) &&
+                ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.INTERNET)) {
 
                 Toast.makeText(context,"권한이 없습니다. 앱 정보에서 직접 권한을 획득 해야 합니다",Toast.LENGTH_SHORT).show();
 
             } else {
                 ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.RECORD_AUDIO,
-                        Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.INTERNET}, 1);
 
             }
 
