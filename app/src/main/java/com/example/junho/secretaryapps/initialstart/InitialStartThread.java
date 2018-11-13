@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.junho.secretaryapps.interact.InteractAnim;
-import com.example.junho.secretaryapps.interact.InteractSpeech;
+import com.example.junho.secretaryapps.interact.TTSSpeech;
 import com.example.junho.secretaryapps.R;
 
 
@@ -21,18 +21,16 @@ public class InitialStartThread extends InteractAnim implements Runnable{
     TextView coverTxtView, reUseTxtView;
     Handler mainHandler;
     Context context;
-    InteractSpeech interactSpeech;
+    TTSSpeech ttsSpeech;
     Animation iconRotate;
-    TextToSpeech tts;
 
     public InitialStartThread(ImageView rotationImageView, TextView coverTxtView,
-                              TextView reUseTxtView, Context context, Handler mainHandler, TextToSpeech tts){
+                              TextView reUseTxtView, Context context, Handler mainHandler){
         this.rotationImageView = rotationImageView;
         this.coverTxtView = coverTxtView;
         this.reUseTxtView = reUseTxtView;
         this.mainHandler = mainHandler;
         this.context = context;
-        this.tts = tts;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -40,7 +38,7 @@ public class InitialStartThread extends InteractAnim implements Runnable{
     public void run() {
         Looper.prepare();
         try {
-            interactSpeech = new InteractSpeech(context, tts);
+            ttsSpeech = new TTSSpeech(context);
             iconRotate = AnimationUtils.loadAnimation(context, R.anim.iconrotate);
             rotationImageView.startAnimation(iconRotate);
             /*super.alpha(coverTxtView);
@@ -59,8 +57,8 @@ public class InitialStartThread extends InteractAnim implements Runnable{
             super.nextSetText(mainHandler,"앞으로 잘 부탁 드립니다",3);
             super.alpha(reUseTxtView);*/
 
-            super.nextSetText(mainHandler,"애플리케이션 기본 모드를 선택하여 주세요. 선택하신 모드에 맞춰 조작 방식이 달라집니다.",3);
             mainHandler.sendEmptyMessage(1);
+            super.nextSetText(mainHandler,"애플리케이션 기본 모드를 선택하여 주세요. 선택하신 모드에 맞춰 조작 방식이 달라집니다.",3);
 
         } catch (InterruptedException e) {
             e.printStackTrace();

@@ -3,29 +3,24 @@ package com.example.junho.secretaryapps;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.AudioManager;
-import android.media.SoundPool;
 import android.os.Handler;
 import android.os.Message;
-import android.speech.tts.TextToSpeech;
+import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.junho.secretaryapps.initialstart.InitialStartThread;
-import com.example.junho.secretaryapps.interact.InteractSpeech;
+import com.example.junho.secretaryapps.interact.TTSSpeech;
 import com.example.junho.secretaryapps.permission.PermissionActivity;
 import com.example.junho.secretaryapps.recognition.RecognitionActivity;
-
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     public static final int CHECKER = PackageManager.PERMISSION_GRANTED;
@@ -34,13 +29,12 @@ public class MainActivity extends AppCompatActivity {
     public static final int TOUCH_MODE_SWITCH = 2;
 
     TextView coverTxtView, reUseTxtView;
-    ImageView rotationImgView,touchModeImgView, sttModeImgView;
+    ImageView rotationImgView, touchModeImgView, sttModeImgView;
     LinearLayout coverLayout;
     InitialStartThread animThread;
     Thread mainThread;
-    TextToSpeech tts;
-    InteractSpeech interactSpeech = new InteractSpeech(this,tts);
-    public static int modeSwitch;
+    TTSSpeech ttsSpeech;
+    public static int modeSwitch, mode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,73 +48,115 @@ public class MainActivity extends AppCompatActivity {
         coverLayout = (LinearLayout) findViewById(R.id.coverLayout);
         sttModeImgView = (ImageView) findViewById(R.id.sttModeImgView);
         touchModeImgView = (ImageView) findViewById(R.id.touchModeImgView);
+        ttsSpeech = new TTSSpeech(this);
+
+        Toast.makeText(this, "asdf", Toast.LENGTH_SHORT).show();
+        /*
+         *  권한이 있는지 판별합니다.
+         *  권한이 있으면 초기기동 애니메이션을 실행 하거나
+         *  초기기동이 아닐 시 사용자가 기존에 사용했던 모드로 이동합니다.
+         *  터치 모드 or 음성인식 모드
+         * */
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != CHECKER ||
-            ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != CHECKER ||
-            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != CHECKER) {
+                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != CHECKER ||
+                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != CHECKER) {
 
             Intent perIntent = new Intent(this, PermissionActivity.class);
             startActivityForResult(perIntent, PERMISSION_CODE);
-        }else{
-            animThread = new InitialStartThread(rotationImgView, coverTxtView, reUseTxtView, this, mainHandler,tts);
+
+        } else {
+
+            animThread = new InitialStartThread(rotationImgView, coverTxtView, reUseTxtView, this, mainHandler);
             mainThread = new Thread(animThread);
 
             mainThread.setDaemon(true);
             mainThread.start();
+
         }
 
-        tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if(status !=TextToSpeech.ERROR){
-                    tts.setLanguage(Locale.KOREAN);
-                }
-            }
-        });
-        tts.setSpeechRate(1.5f);
-        interactSpeech = new InteractSpeech(getApplicationContext(),tts);
 
-
-
-
+        /* Speech recognition mode select*/
         sttModeImgView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+
                     modeSwitch = 1;
-                    Intent intent = new Intent(MainActivity.this,RecognitionActivity.class);
+
+                    ttsSpeech.ttsStop();
+                    Intent intent = new Intent(MainActivity.this, RecognitionActivity.class);
                     startActivity(intent);
+
                 }
                 return true;
             }
         });
 
+        /* Touch mode select*/
         touchModeImgView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+
                     modeSwitch = 2;
+
+                    ttsSpeech.ttsStop();
+
                 }
                 return true;
             }
         });
     }
 
+    /*Pause시 tts객체를 정지시킵니다.*/
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ttsSpeech.ttsStop();
+    }
+
+    /*Destroy시 tts객체를 해제합니다.*/
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(tts != null){
-            tts.stop();
-            tts.shutdown();
-            tts = null;
+        if (ttsSpeech != null) {
+            ttsSpeech.ttsClear();
         }
     }
 
+    /* modeSwitch : 음성모드, 터치모드인지 인식하는 변수입니다. */
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("mode",modeSwitch);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
+        super.onRestoreInstanceState(savedInstanceState, persistentState);
+         int mode = savedInstanceState.getInt("modeSwitch");
+
+                if (mode == STT_MODE_SWITCH) {
+
+                    Intent intent = new Intent(MainActivity.this, RecognitionActivity.class);
+                    startActivity(intent);
+
+                } else if (mode == TOUCH_MODE_SWITCH) {
+
+                    Intent intent = new Intent(MainActivity.this, RecognitionActivity.class);
+                    startActivity(intent);
+
+                }
+    }
+
+    /* permission 획득 후에 애니메이션을 실행합니다. */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK) {
             if (data.getBooleanExtra("result", true)) {
-                animThread = new InitialStartThread(rotationImgView, coverTxtView, reUseTxtView, this, mainHandler,tts);
+                animThread = new InitialStartThread(rotationImgView, coverTxtView, reUseTxtView, this, mainHandler);
                 mainThread = new Thread(animThread);
 
                 mainThread.setDaemon(true);
@@ -147,8 +183,8 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case 3:
                     reUseTxtView.setText(setResult);
-                    interactSpeech.speech(reUseTxtView);
-                  break;
+                    ttsSpeech.speech(reUseTxtView);
+                    break;
             }
         }
     };

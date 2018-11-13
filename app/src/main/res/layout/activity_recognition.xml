@@ -8,30 +8,33 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/mainFrame"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="4"
+        android:layout_height="150dp"
         android:orientation="vertical">
 
 
         <TextView
             android:id="@+id/recognitionTxtView"
-            android:layout_width="350dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:layout_marginTop="120dp"
             android:text="안녕하세요? 무엇을 도와드릴까요?"
             android:textSize="23dp"
             android:textStyle="bold"
             android:visibility="visible" />
-    </LinearLayout>
-
-    <LinearLayout
+    </FrameLayout>
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.5"
+        android:layout_height="320dp"
+        android:id="@+id/listView">
+    </ListView>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
         android:orientation="vertical">
 
         <ImageView
@@ -43,12 +46,12 @@
 
         <ImageView
             android:id="@+id/exeRoundImgView"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
             android:layout_gravity="center"
-            android:visibility="gone"
+            android:visibility="visible"
             app:srcCompat="@drawable/exeround" />
 
-    </LinearLayout>
+    </FrameLayout>
 
 </LinearLayout>
