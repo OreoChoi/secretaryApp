@@ -1,4 +1,4 @@
-package com.example.junho.secretaryapps.interact;
+package com.example.junho.secretaryapps;
 
 import android.annotation.TargetApi;
 import android.content.Context;

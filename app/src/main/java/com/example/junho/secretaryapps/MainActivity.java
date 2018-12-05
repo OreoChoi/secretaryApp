@@ -1,15 +1,24 @@
 package com.example.junho.secretaryapps;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.Signature;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Handler;
 import android.os.Message;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,10 +26,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.junho.secretaryapps.initialstart.InitialStartThread;
-import com.example.junho.secretaryapps.interact.TTSSpeech;
 import com.example.junho.secretaryapps.permission.PermissionActivity;
 import com.example.junho.secretaryapps.recognition.RecognitionActivity;
+
+import java.security.MessageDigest;
 
 public class MainActivity extends AppCompatActivity {
     public static final int CHECKER = PackageManager.PERMISSION_GRANTED;
@@ -34,8 +43,9 @@ public class MainActivity extends AppCompatActivity {
     InitialStartThread animThread;
     Thread mainThread;
     TTSSpeech ttsSpeech;
-    public static int modeSwitch, mode;
+    public static int mode;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,14 +60,6 @@ public class MainActivity extends AppCompatActivity {
         touchModeImgView = (ImageView) findViewById(R.id.touchModeImgView);
         ttsSpeech = new TTSSpeech(this);
 
-        Toast.makeText(this, "asdf", Toast.LENGTH_SHORT).show();
-        /*
-         *  권한이 있는지 판별합니다.
-         *  권한이 있으면 초기기동 애니메이션을 실행 하거나
-         *  초기기동이 아닐 시 사용자가 기존에 사용했던 모드로 이동합니다.
-         *  터치 모드 or 음성인식 모드
-         * */
-
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != CHECKER ||
                 ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != CHECKER ||
                 ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != CHECKER) {
@@ -66,29 +68,41 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(perIntent, PERMISSION_CODE);
 
         } else {
+            SharedPreferences pref = getSharedPreferences("ModeSwitch", Activity.MODE_PRIVATE);
+            mode = pref.getInt("mode", 0);
 
-            animThread = new InitialStartThread(rotationImgView, coverTxtView, reUseTxtView, this, mainHandler);
-            mainThread = new Thread(animThread);
+            if (mode == STT_MODE_SWITCH) {
+                Intent intent = new Intent(MainActivity.this, RecognitionActivity.class);
+                startActivity(intent);
+                finish();
+            } else if (mode == TOUCH_MODE_SWITCH) {
+                Intent intent = new Intent(MainActivity.this, RecognitionActivity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                animThread = new InitialStartThread(rotationImgView, coverTxtView, reUseTxtView, this, mainHandler);
+                mainThread = new Thread(animThread);
 
-            mainThread.setDaemon(true);
-            mainThread.start();
+                mainThread.setDaemon(true);
+                mainThread.start();
+            }
 
         }
-
 
         /* Speech recognition mode select*/
         sttModeImgView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    SharedPreferences pref = getSharedPreferences("ModeSwitch", Activity.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putInt("mode", STT_MODE_SWITCH);
+                    editor.commit();
 
-                    modeSwitch = 1;
 
                     ttsSpeech.ttsStop();
                     Intent intent = new Intent(MainActivity.this, RecognitionActivity.class);
                     startActivity(intent);
-
                 }
                 return true;
             }
@@ -99,11 +113,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-
-                    modeSwitch = 2;
+                    SharedPreferences pref = getSharedPreferences("ModeSwitch", Activity.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putInt("mode", TOUCH_MODE_SWITCH);
+                    editor.commit();
 
                     ttsSpeech.ttsStop();
-
                 }
                 return true;
             }
@@ -126,41 +141,25 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /* modeSwitch : 음성모드, 터치모드인지 인식하는 변수입니다. */
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt("mode",modeSwitch);
-    }
-
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onRestoreInstanceState(savedInstanceState, persistentState);
-         int mode = savedInstanceState.getInt("modeSwitch");
-
-                if (mode == STT_MODE_SWITCH) {
-
-                    Intent intent = new Intent(MainActivity.this, RecognitionActivity.class);
-                    startActivity(intent);
-
-                } else if (mode == TOUCH_MODE_SWITCH) {
-
-                    Intent intent = new Intent(MainActivity.this, RecognitionActivity.class);
-                    startActivity(intent);
-
-                }
-    }
-
     /* permission 획득 후에 애니메이션을 실행합니다. */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK) {
             if (data.getBooleanExtra("result", true)) {
-                animThread = new InitialStartThread(rotationImgView, coverTxtView, reUseTxtView, this, mainHandler);
-                mainThread = new Thread(animThread);
 
-                mainThread.setDaemon(true);
-                mainThread.start();
+            } else {
+                SharedPreferences pref = getSharedPreferences("ModeSwitch", Activity.MODE_PRIVATE);
+                int mode = pref.getInt("mode", 0);
+
+                if (mode == STT_MODE_SWITCH) {
+                    Intent intent = new Intent(MainActivity.this, RecognitionActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else if (mode == TOUCH_MODE_SWITCH) {
+                    Intent intent = new Intent(MainActivity.this, RecognitionActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
         }
     }
@@ -188,4 +187,31 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+
+    /* Mode 초기화 메소드*/
+    @Deprecated
+    public void setDefaultMode(){
+        SharedPreferences pref = getSharedPreferences("ModeSwitch",Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt("mode",0);
+        editor.commit();
+    }
+
+    /* Application Hash키를 얻는 메소드 */
+    @Deprecated
+    private void getAppKeyHash() {
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md;
+                md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                String something = new String(Base64.encode(md.digest(), 0));
+                Log.e("Hash key", something);
+            }
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            Log.e("name not found", e.toString());
+        }
+    }
 }

@@ -3,85 +3,70 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAED5A"
+    android:id="@+id/memo_layout"
+    android:background="#EAEAEA"
     android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#009999"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="470dp"
-        android:orientation="vertical">
+        android:layout_height="40dp"
+        android:background="@null"
+        android:orientation="horizontal">
 
-        <LinearLayout
-                android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:orientation="horizontal">
+        <TextView
+            android:id="@+id/currentLocationText"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:hint="현재 위치를 표시합니다." />
 
-            <TextView
-                android:id="@+id/currentLocationText"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:hint="현재 위치를 표시합니다." />
-
-            <TextView
-                android:id="@+id/daysText"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:hint="현재 날짜를 표시합니다." />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <EditText
-                android:id="@+id/contentText"
-                android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:background="#DDDDDD"
-                android:gravity="left"
-                android:hint="본문"
-                android:inputType="textMultiLine"/>
-
-            <EditText
-                android:id="@+id/titleText"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:background="#DDDDDD"
-                android:gravity="left"
-                android:hint="제목"
-                android:inputType="textMultiLine"
-                android:lines="2"
-                android:padding="8dp" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/daysText"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            android:gravity="center"
+            android:hint="현재 날짜를 표시합니다." />
 
     </LinearLayout>
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="match_parent"
+        android:background="@null"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/exeImgView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:srcCompat="@android:drawable/ic_menu_compass" />
+        <EditText
+            android:id="@+id/contentText"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            android:background="@null"
+            android:gravity="left"
+            android:hint="본문"
+            android:inputType="textMultiLine" />
 
-        <ImageView
-            android:id="@+id/exeRoundImgView"
-            android:layout_width="140dp"
-            android:layout_height="140dp"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            app:srcCompat="@drawable/exeround" />
-
-    </FrameLayout>
-
+        <EditText
+            android:id="@+id/titleText"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:gravity="left"
+            android:hint="제목"
+            android:inputType="textMultiLine"
+            android:lines="2"
+            android:padding="8dp" />
+    </LinearLayout>
 </LinearLayout>

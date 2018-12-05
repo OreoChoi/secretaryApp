@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.junho.secretaryapps">
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -8,21 +15,36 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        tools:ignore="GoogleAppIndexingWarning">
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+
         </activity>
-        <activity android:name=".permission.PermissionActivity"></activity>
-        <activity android:name=".recognition.RecognitionActivity"></activity>"
-        <activity android:name=".calculator.CalculatorActivity"></activity>"
-        <activity android:name=".memo.MemoActivity"></activity>"
+        <activity android:name=".permission.PermissionActivity" />
+        <activity android:name=".recognition.RecognitionActivity" />
+        <activity android:name=".calculator.TouchCalculatorActivity" />
+        <activity
+            android:name=".map.MapActivity"
+            android:configChanges="orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
+            android:taskAffinity="" />
+        <activity android:name=".memo.MemoActivity" />
+
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="654450149cce663ea571ea04859cb5b7" />
+
+        <service
+            android:name=".map.MyService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>

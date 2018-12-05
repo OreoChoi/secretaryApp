@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/memo_delete"
+        android:title="삭제">
+    </item>
+    <item
+        android:id="@+id/memo_shared"
+        android:title="공유">
+    </item>
+    <item
+        android:id="@+id/memo_lock"
+        android:title="잠금">
+    </item>
+    <item
+        android:id="@+id/memo_background_change"
+        android:title="배경 변경">
+    </item>
+</menu>

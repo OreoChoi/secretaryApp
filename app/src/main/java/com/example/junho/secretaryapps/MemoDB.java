@@ -2,28 +2,44 @@ package com.example.junho.secretaryapps;
 
 import android.app.Activity;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import com.example.junho.secretaryapps.memo.BackColor;
+import static android.content.Context.MODE_PRIVATE;
 
-public class MemoDB extends SecretaryDB {
-
+public class MemoDB {
+    private final String dbName = "secretary";
+    Activity activity;
+    SQLiteDatabase sqliteDB;
 
     public MemoDB(Activity activity) {
-        super(activity);
+        this.activity = activity;
+    }
+
+    public void dbOpen(){
+        sqliteDB = activity.openOrCreateDatabase(dbName, MODE_PRIVATE, null);
+    }
+
+    public void dbClose(){
+        sqliteDB.close();
     }
 
     public void memoCreate() {
         sqliteDB.execSQL("create table if not exists memo " +
                 "(memoIndex integer primary key autoincrement," + "location VARCHAR(30)," +
-                "date VARCHAR(20), content VARCHAR(200), title VARCHAR(50));");
+                "date VARCHAR(20), content VARCHAR(200), title VARCHAR(50),color integer);");
 
     }
 
-    public void memoInsert(String c1, String c2, String c3, String c4) {
-        sqliteDB.execSQL("insert into memo (location, date, content, title) " +
-                         "Values ('" + c1 + "','" + c2 + "','" + c3 + "','" + c4 + "');");
-
+    public void memoInsert(String c1, String c2, String c3, String c4, int c5) {
+        sqliteDB.execSQL("insert into memo (location, date, content, title, color) " +
+                "Values ('" + c1 + "','" + c2 + "','" + c3 + "','" + c4 + "','" + c5+ "');");
     }
 
-    public void memoDelect(int num){
+    public void memoUpdate(int index, String c1, String c2, int c3) {
+        sqliteDB.execSQL("update memo set content = '" + c1 + "', title = '" + c2 + "', color = '" + c3 + "' where memoindex = " + index + ";");
+    }
+
+    public void memoDelect(int num) {
         sqliteDB.execSQL("delete from memo where memoIndex = " + num);
 
     }
@@ -31,6 +47,7 @@ public class MemoDB extends SecretaryDB {
     /* DB의 가장 마지막 Index를 찾습니다. */
     public int lastIndex() {
         int lastIndex;
+
         Cursor c = sqliteDB.rawQuery("select memoIndex from memo order by memoIndex desc", null);
 
         c.moveToFirst();
@@ -38,10 +55,9 @@ public class MemoDB extends SecretaryDB {
         c.close();
 
         return lastIndex;
-
     }
 
-    public Cursor listCursor(String query){
+    public Cursor listCursor(String query) {
         Cursor cursor = sqliteDB.rawQuery(query, null);
         return cursor;
     }

@@ -3,7 +3,6 @@ package com.example.junho.secretaryapps.permission;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -25,15 +24,37 @@ import android.widget.Toast;
 
 public class PermissionChecker {
     public static final int CHECKER = PackageManager.PERMISSION_GRANTED;
+    int permissionAudio, permissionStorage, permissionLocation, permissionInternet;
+    Context context;
+    Activity activity;
 
+    public PermissionChecker(Context context,Activity activity){
+        this.context = context;
+        this.activity = activity;
+    }
 
-    public boolean checkPermission(Context c,Activity activity) {
-        Context context = c;
+    /* Location 권한만 검사합니다. */
+    public boolean checkLocationPermission(){
+        permissionLocation = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION);
 
-        int permissionAudio = ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO);
-        int permissionStorage = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE);
-        int permissionLocation = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION);
-        int permissionInternet = ContextCompat.checkSelfPermission(context, Manifest.permission.INTERNET);
+        if(permissionLocation == CHECKER){
+            return true;
+        }else{
+            if(ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION)){
+                toast("Location 권한이 없습니다. 앱 정보에서 직접 권한을 획득 해야합니다.");
+            }else {
+                ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
+            }
+            return false;
+        }
+    }
+
+    /* 모든 권한을 검사합니다. */
+    public boolean checkAllPermission() {
+        permissionAudio = ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO);
+        permissionStorage = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE);
+        permissionLocation = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION);
+        permissionInternet = ContextCompat.checkSelfPermission(context, Manifest.permission.INTERNET);
 
         if (permissionAudio == CHECKER && permissionStorage == CHECKER &&
             permissionLocation == CHECKER && permissionInternet == CHECKER) {
@@ -45,18 +66,19 @@ public class PermissionChecker {
                 ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION) &&
                 ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.INTERNET)) {
 
-                Toast.makeText(context,"권한이 없습니다. 앱 정보에서 직접 권한을 획득 해야 합니다",Toast.LENGTH_SHORT).show();
-
+                toast("권한이 없습니다. 앱 정보에서 직접 권한을 획득 해야 합니다");
             } else {
                 ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.RECORD_AUDIO,
                         Manifest.permission.READ_EXTERNAL_STORAGE,
                         Manifest.permission.ACCESS_FINE_LOCATION,
                         Manifest.permission.INTERNET}, 1);
-
             }
-
             return false;
-
         }
+    }
+
+    /* 토스트 메소드 */
+    public void toast(String str) {
+        Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
     }
 }

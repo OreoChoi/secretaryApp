@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MemoAdapter extends BaseAdapter {
@@ -14,6 +15,10 @@ public class MemoAdapter extends BaseAdapter {
 
     public MemoAdapter(Context context){
         this.context = context;
+    }
+
+    public void init(){
+        this.items.clear();
     }
 
     @Override
@@ -42,6 +47,7 @@ public class MemoAdapter extends BaseAdapter {
         view.setTitle(item.getTitle());
         view.setContent(item.getContent());
         view.setDate(item.getDate());
+        view.setBackColor(item.getBackColor());
 
         return view;
     }

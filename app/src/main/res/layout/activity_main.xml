@@ -27,7 +27,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
         android:layout_marginRight="100dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:srcCompat="@drawable/mic" />
 
     <ImageView
@@ -36,17 +36,35 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_marginLeft="100dp"
         app:srcCompat="@drawable/hand" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="110dp"
+        android:layout_marginRight="100dp"
+        android:visibility="visible"
+        android:text="음성 입력 모드" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="110dp"
+        android:layout_marginLeft="100dp"
+        android:visibility="visible"
+        android:text="터치 입력 모드" />
 
     <LinearLayout
         android:id="@+id/coverLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#ff0fEAD3"
-        android:visibility="invisible"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="invisible">
 
         <ImageView
             android:id="@+id/rotationImageView"
@@ -70,7 +88,6 @@
                 android:textSize="23dp"
                 android:textStyle="bold"
                 android:visibility="visible" />
-
 
         </FrameLayout>
 

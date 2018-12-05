@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pallet"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/white_circle"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="25dp"
+            android:src="@drawable/white_circle"/>
+
+        <ImageView
+            android:id="@+id/pale_yellow_circle"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="25dp"
+            android:src="@drawable/pale_yellow_circle"/>
+
+        <ImageView
+            android:id="@+id/yellow_circle"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="25dp"
+            android:src="@drawable/yellow_circle"/>
+
+        <ImageView
+            android:id="@+id/apricot_circle"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="25dp"
+            android:src="@drawable/apricot_circle"/>
+
+        <ImageView
+            android:id="@+id/orange_circle"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="25dp"
+            android:src="@drawable/orange_circle"/>
+
+        <ImageView
+            android:id="@+id/pink_circle"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/pink_circle"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/purple_circle"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="25dp"
+            android:src="@drawable/purple_circle"/>
+
+        <ImageView
+            android:id="@+id/pale_blue_circle"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="25dp"
+            android:src="@drawable/pale_blue_circle"/>
+
+        <ImageView
+            android:id="@+id/cyan_circle"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="25dp"
+            android:src="@drawable/cyan_circle"/>
+
+        <ImageView
+            android:id="@+id/pale_green_circle"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="25dp"
+            android:src="@drawable/pale_green_circle"/>
+
+        <ImageView
+            android:id="@+id/gray_circle"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="25dp"
+            android:src="@drawable/gray_circle"/>
+
+        <ImageView
+            android:id="@+id/black_circle"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/black_circle"/>
+    </LinearLayout>
+</LinearLayout>

@@ -15,7 +15,7 @@ public class PermissionActivity extends AppCompatActivity {
     TextView locationTxtView,storageTxtView,audioTxtView;
     ImageButton imageButton, imageButton2, imageButton3;
     Button allowButton;
-    PermissionChecker perChecker = new PermissionChecker();
+    PermissionChecker perChecker = new PermissionChecker(this,PermissionActivity.this);
     Intent resIntent = new Intent();
 
     @Override
@@ -35,7 +35,7 @@ public class PermissionActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                boolean checkResult = perChecker.checkPermission(getApplicationContext(),PermissionActivity.this);
+                boolean checkResult = perChecker.checkAllPermission();
 
                 if(checkResult) {
                     resIntent.putExtra("result",true);

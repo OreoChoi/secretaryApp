@@ -47,7 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginBottom="10dp"
-                android:background="#ff0fEAD3"
+                android:background="#009999"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -101,7 +101,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginBottom="10dp"
-                android:background="#ff0fEAD3"
+                android:background="#009999"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -153,7 +153,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginBottom="10dp"
-                android:background="#ff0fEAD3"
+                android:background="#009999"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -211,7 +211,7 @@
         android:layout_width="310dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="#ff0fEAD3"
+        android:background="#009999"
         android:layout_marginTop="8dp"
         android:text="허용하기" />
 

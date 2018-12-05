@@ -12,6 +12,7 @@ public class MemoItemView extends LinearLayout {
     TextView memoTitle;
     TextView memoContent;
     TextView memoDate;
+    LinearLayout listLayout;
 
     public MemoItemView(Context context){
         super(context);
@@ -27,6 +28,7 @@ public class MemoItemView extends LinearLayout {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.memo_listview,this,true);
 
+        listLayout = (LinearLayout) findViewById(R.id.memoListView);
         memoTitle = (TextView) findViewById(R.id.memoTitle);
         memoContent = (TextView) findViewById(R.id.memoContent);
         memoDate = (TextView) findViewById(R.id.memoDate);
@@ -43,5 +45,9 @@ public class MemoItemView extends LinearLayout {
 
     public void setDate(String date){
         memoDate.setText(date);
+    }
+
+    public void setBackColor(int backColor) {
+        listLayout.setBackgroundColor(backColor);
     }
 }

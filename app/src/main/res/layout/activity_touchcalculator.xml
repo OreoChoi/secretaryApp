@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EAEAEA"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/inputEditText"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:lines="2"
+            android:ems="10"
+            android:gravity="right"
+            android:hint="계산식을 입력해주세요"
+            android:inputType="textPersonName"
+            android:paddingTop="15dp"
+            android:paddingRight="12dp"
+            android:textColor="#009999"
+            android:textSize="20dp"
+            tools:layout_editor_absoluteX="55dp"
+            tools:layout_editor_absoluteY="69dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_weight="3">
+
+        <TextView
+            android:id="@+id/calModifyTxtView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            android:layout_weight="1"
+            android:textSize="20dp"
+            android:textColor="#009999"
+            android:hint="계산식 : " />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="20dp"
+        android:layout_weight="2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp"
+            android:paddingTop="5dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="5dp">
+
+            <ImageButton
+                android:id="@+id/calClear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:background="#EAEAEA"
+                app:srcCompat="@drawable/calclear" />
+
+            <ImageButton
+                android:id="@+id/calBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:background="#EAEAEA"
+                app:srcCompat="@drawable/calback" />
+
+            <ImageButton
+                android:id="@+id/calDivision"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:background="#EAEAEA"
+                app:srcCompat="@drawable/caldivision" />
+
+            <ImageButton
+                android:id="@+id/calPercent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#EAEAEA"
+                app:srcCompat="@drawable/calpercent" />
+
+        </LinearLayout>
+
+        <!-- Calculate row2 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp"
+            android:paddingTop="5dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="5dp">
+
+            <ImageButton
+                android:id="@+id/calSeven"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:background="#EAEAEA"
+                app:srcCompat="@drawable/cal7" />
+
+            <ImageButton
+                android:id="@+id/calEight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:background="#EAEAEA"
+                app:srcCompat="@drawable/cal8" />
+
+            <ImageButton
+                android:id="@+id/calNine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:background="#EAEAEA"
+                app:srcCompat="@drawable/cal9" />
+
+            <ImageButton
+                android:id="@+id/calMultiply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:background="#EAEAEA"
+                app:srcCompat="@drawable/calmultiply" />
+
+            <ImageButton
+                android:id="@+id/calPlusMinus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#EAEAEA"
+                app:srcCompat="@drawable/calplusminus" />
+
+        </LinearLayout>
+
+        <!-- Calculate row3 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp"
+            android:paddingTop="5dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="5dp">
+
+            <ImageButton
+                android:id="@+id/calFour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:background="#EAEAEA"
+                app:srcCompat="@drawable/cal4" />
+
+            <ImageButton
+                android:id="@+id/calFive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:background="#EAEAEA"
+                app:srcCompat="@drawable/cal5" />
+
+            <ImageButton
+                android:id="@+id/calSix"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:background="#EAEAEA"
+                app:srcCompat="@drawable/cal6" />
+
+            <ImageButton
+                android:id="@+id/calSubtract"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:background="#EAEAEA"
+                app:srcCompat="@drawable/calsubtract" />
+
+            <ImageButton
+                android:id="@+id/calOpenBracket"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#EAEAEA"
+                app:srcCompat="@drawable/calopenbracket" />
+
+        </LinearLayout>
+
+        <!-- Calculate row4 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp"
+            android:paddingTop="5dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="5dp">
+
+            <ImageButton
+                android:id="@+id/calOne"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:background="#EAEAEA"
+                app:srcCompat="@drawable/cal1" />
+
+            <ImageButton
+                android:id="@+id/calTwo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:background="#EAEAEA"
+                app:srcCompat="@drawable/cal2" />
+
+            <ImageButton
+                android:id="@+id/calThree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:background="#EAEAEA"
+                app:srcCompat="@drawable/cal3" />
+
+            <ImageButton
+                android:id="@+id/calPlus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:background="#EAEAEA"
+                app:srcCompat="@drawable/calplus" />
+
+            <ImageButton
+                android:id="@+id/calCloseBracket"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#EAEAEA"
+                app:srcCompat="@drawable/calclosebracket" />
+
+        </LinearLayout>
+
+        <!-- Calculate row5 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp"
+            android:paddingTop="5dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="5dp">
+
+            <ImageButton
+                android:id="@+id/calZero"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:background="#EAEAEA"
+                app:srcCompat="@drawable/cal0" />
+
+            <ImageButton
+                android:id="@+id/calDoubleZero"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:background="#EAEAEA"
+                app:srcCompat="@drawable/cal00" />
+
+            <ImageButton
+                android:id="@+id/calPeriod"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:background="#EAEAEA"
+                app:srcCompat="@drawable/calperiod" />
+
+            <ImageButton
+                android:id="@+id/calResult"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#EAEAEA"
+                app:srcCompat="@drawable/calresult" />
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

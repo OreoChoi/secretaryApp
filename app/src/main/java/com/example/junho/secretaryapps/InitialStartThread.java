@@ -1,10 +1,9 @@
-package com.example.junho.secretaryapps.initialstart;
+package com.example.junho.secretaryapps;
 
 import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.speech.tts.TextToSpeech;
 import android.support.annotation.RequiresApi;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -12,8 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.junho.secretaryapps.interact.InteractAnim;
-import com.example.junho.secretaryapps.interact.TTSSpeech;
-import com.example.junho.secretaryapps.R;
 
 
 public class InitialStartThread extends InteractAnim implements Runnable{
@@ -41,12 +38,11 @@ public class InitialStartThread extends InteractAnim implements Runnable{
             ttsSpeech = new TTSSpeech(context);
             iconRotate = AnimationUtils.loadAnimation(context, R.anim.iconrotate);
             rotationImageView.startAnimation(iconRotate);
-            /*super.alpha(coverTxtView);
+            super.alpha(coverTxtView);
             super.nextSetText(mainHandler,"이제 기동을 시작합니다",2,1000);
 
             mainHandler.sendEmptyMessage(0);
             super.alpha(reUseTxtView);
-            interactSpeech.speech(reUseTxtView);
 
             super.nextSetText(mainHandler,"저는 음성인식으로 움직이는\n 비서입니다",3);
             super.alpha(reUseTxtView);
@@ -55,7 +51,7 @@ public class InitialStartThread extends InteractAnim implements Runnable{
             super.alpha(reUseTxtView);
 
             super.nextSetText(mainHandler,"앞으로 잘 부탁 드립니다",3);
-            super.alpha(reUseTxtView);*/
+            super.alpha(reUseTxtView);
 
             mainHandler.sendEmptyMessage(1);
             super.nextSetText(mainHandler,"애플리케이션 기본 모드를 선택하여 주세요. 선택하신 모드에 맞춰 조작 방식이 달라집니다.",3);
