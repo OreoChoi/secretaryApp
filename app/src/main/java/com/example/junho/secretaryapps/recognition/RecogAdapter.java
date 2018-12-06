@@ -1,45 +1,32 @@
 package com.example.junho.secretaryapps.recognition;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.speech.RecognitionListener;
-import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
+
+import com.example.junho.secretaryapps.ApplicationClass;
 
 import java.util.ArrayList;
 
 import static com.example.junho.secretaryapps.memo.MemoActivity.flag;
 import static com.example.junho.secretaryapps.recognition.RecognitionActivity.DELAY;
 import static com.example.junho.secretaryapps.recognition.RecognitionActivity.FINISH;
-import static com.example.junho.secretaryapps.recognition.RecognitionActivity.READY;
 import static com.example.junho.secretaryapps.recognition.RecognitionActivity.RECOGNITION;
 
 public class RecogAdapter implements RecognitionListener {
-    SpeechRecognizer speechRecognizer;
-    Context context;
-    Intent intent;
-    Handler recogHandler;
+    private SpeechRecognizer speechRecognizer;
+    ApplicationClass applicationClass;
+    private Intent intent;
+    private Handler recogHandler;
 
-    public RecogAdapter(Context context){
-        this.context = context;
-        recogSetter();
-    }
-    public RecogAdapter(Context context, Handler handler) {
-        this.context = context;
+    public RecogAdapter(ApplicationClass applicationClass, Handler handler) {
+        this.applicationClass = applicationClass;
+        this.intent = applicationClass.getRecognitionIntent();
+        this.speechRecognizer = applicationClass.getSpeechRecognizer();
         this.recogHandler = handler;
-        recogSetter();
-    }
-
-    public void recogSetter() {
-        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context);
-        intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, context.getPackageName());
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR");
-        intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS,5000);
-
     }
 
     //음성인식을 계속 진행합니다.

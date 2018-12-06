@@ -11,6 +11,7 @@
 
     <application
         android:allowBackup="true"
+        android:name="com.example.junho.secretaryapps.ApplicationClass"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -44,7 +45,7 @@
         <service
             android:name=".map.MyService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
     </application>
 
 </manifest>

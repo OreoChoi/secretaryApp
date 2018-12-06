@@ -1,24 +1,11 @@
-package com.example.junho.secretaryapps.interact;
+package com.example.junho.secretaryapps;
 
 import android.os.Handler;
 import android.os.Message;
-import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.TextView;
 
-/*
- * alphaReverse(TextView t)
- *
- * TextView가 서서히 alpha값이 0으로 변경
- * TextView의 alpha값이 0으로 도달한 경우 다음 Text를 setText합니다.
- * setRepeatMode(REVERSE)에 의해 다시 alpha값이 서서히 1으로 변경됩니다.
- *
- *
- * resultTextAnim()
- *
- *
- * */
 public class InteractAnim {
     AlphaAnimation alphaReverse = new AlphaAnimation(1, 0);
     private static final int PLAYING_TIME = 1000;

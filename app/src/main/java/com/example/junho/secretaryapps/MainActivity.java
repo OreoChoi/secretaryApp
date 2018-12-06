@@ -3,20 +3,17 @@ package com.example.junho.secretaryapps;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
-import android.location.Location;
-import android.location.LocationManager;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -24,7 +21,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.junho.secretaryapps.permission.PermissionActivity;
 import com.example.junho.secretaryapps.recognition.RecognitionActivity;
@@ -42,7 +38,8 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout coverLayout;
     InitialStartThread animThread;
     Thread mainThread;
-    TTSSpeech ttsSpeech;
+    ApplicationClass applicationClass;
+    TTSClass ttsSpeech;
     public static int mode;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -58,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
         coverLayout = (LinearLayout) findViewById(R.id.coverLayout);
         sttModeImgView = (ImageView) findViewById(R.id.sttModeImgView);
         touchModeImgView = (ImageView) findViewById(R.id.touchModeImgView);
-        ttsSpeech = new TTSSpeech(this);
+        applicationClass = (ApplicationClass) getApplicationContext();
+        ttsSpeech = new TTSClass(applicationClass);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != CHECKER ||
                 ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != CHECKER ||
@@ -132,15 +130,6 @@ public class MainActivity extends AppCompatActivity {
         ttsSpeech.ttsStop();
     }
 
-    /*Destroy시 tts객체를 해제합니다.*/
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (ttsSpeech != null) {
-            ttsSpeech.ttsClear();
-        }
-    }
-
     /* permission 획득 후에 애니메이션을 실행합니다. */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -164,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /*추후 애스크 스레드로 교체할 것*/
+    @SuppressLint("HandlerLeak")
     Handler mainHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {

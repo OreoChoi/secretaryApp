@@ -10,15 +10,12 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.junho.secretaryapps.interact.InteractAnim;
-
 
 public class InitialStartThread extends InteractAnim implements Runnable{
     ImageView rotationImageView;
     TextView coverTxtView, reUseTxtView;
     Handler mainHandler;
     Context context;
-    TTSSpeech ttsSpeech;
     Animation iconRotate;
 
     public InitialStartThread(ImageView rotationImageView, TextView coverTxtView,
@@ -35,7 +32,6 @@ public class InitialStartThread extends InteractAnim implements Runnable{
     public void run() {
         Looper.prepare();
         try {
-            ttsSpeech = new TTSSpeech(context);
             iconRotate = AnimationUtils.loadAnimation(context, R.anim.iconrotate);
             rotationImageView.startAnimation(iconRotate);
             super.alpha(coverTxtView);
@@ -61,6 +57,4 @@ public class InitialStartThread extends InteractAnim implements Runnable{
         }
         Looper.loop();
     }
-
-
 }

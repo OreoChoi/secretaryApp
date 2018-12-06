@@ -20,8 +20,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.junho.secretaryapps.ApplicationClass;
 import com.example.junho.secretaryapps.R;
-import com.example.junho.secretaryapps.TTSSpeech;
+import com.example.junho.secretaryapps.TTSClass;
 
 import net.daum.mf.map.api.CameraUpdateFactory;
 import net.daum.mf.map.api.MapPOIItem;
@@ -35,7 +36,7 @@ public class MapActivity extends AppCompatActivity {
     MyService gps;
     EditText destEditText, distanceEditText;
     ImageButton clearButton;
-    TTSSpeech ttsSpeech;
+    TTSClass ttsSpeech;
     MapView mapView;
     AddressSearch addressSearch;
     ViewGroup mapViewContainer;
@@ -44,6 +45,7 @@ public class MapActivity extends AppCompatActivity {
     InputMethodManager imm;
     Intent serviceIntent;
     String distance = "";
+    ApplicationClass applicationClass;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,7 +56,8 @@ public class MapActivity extends AppCompatActivity {
         distanceEditText = (EditText) findViewById(R.id.distanceEditText);
         clearButton = (ImageButton) findViewById(R.id.clearButton);
         addressSearch = new AddressSearch(this);
-        ttsSpeech = new TTSSpeech(this);
+        applicationClass = (ApplicationClass) getApplicationContext();
+        ttsSpeech = new TTSClass(applicationClass);
         startLocation = new Location("start");
         destLocation = new Location("end");
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
@@ -208,12 +211,6 @@ public class MapActivity extends AppCompatActivity {
                 return false;
             }
         });
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        gps.setTTSSpeech();
     }
 
     /* 지도에 현 위치 Marker setting */

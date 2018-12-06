@@ -24,8 +24,9 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
+import com.example.junho.secretaryapps.ApplicationClass;
 import com.example.junho.secretaryapps.R;
-import com.example.junho.secretaryapps.TTSSpeech;
+import com.example.junho.secretaryapps.TTSClass;
 import com.example.junho.secretaryapps.permission.PermissionChecker;
 
 import net.daum.mf.map.api.MapCircle;
@@ -37,14 +38,16 @@ import java.io.Serializable;
 public class MyService extends Service implements LocationListener, Serializable {
     Context context;
     Activity activity;
+
     MapView mapView;
     Location currentLocation, destLocation;
-    TTSSpeech ttsSpeech;
+    TTSClass ttsSpeech;
     MapCircle circle;
+    ApplicationClass applicationClass;
     protected LocationManager locationManager;
     boolean isGPSEnabled = false, isNetworkEnabled = false, isGetLocation = false;
     double startLongitude, startLatitude, alarmRingDistance, destLatitude, destLongitude;
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 1;
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 0;
     private static final long MIN_TIME_BW_UPDATES = 1000 * 5;
     public static NotificationCompat.Builder builder;
     public static NotificationManager notificationManager;
@@ -53,7 +56,6 @@ public class MyService extends Service implements LocationListener, Serializable
     public void setMyService(Context context, Activity activity) {
         this.context = context;
         this.activity = activity;
-        setTTSSpeech();
         getLocation();
     }
 
@@ -148,11 +150,6 @@ public class MyService extends Service implements LocationListener, Serializable
     /* 알림 거리 */
     public void setAlarmDistance(Double alarmDistance) {
         this.alarmRingDistance = alarmDistance;
-    }
-
-    //TTS객체 하나만 사용하기
-    public void setTTSSpeech() {
-        ttsSpeech = new TTSSpeech(context);
     }
 
     /* GPS & WIFI의 ON/OFF 확인*/
@@ -266,6 +263,8 @@ public class MyService extends Service implements LocationListener, Serializable
     public void onLocationChanged(Location location) {
         double currentLatitude = location.getLatitude();
         double currentLongitude = location.getLongitude();
+        applicationClass = (ApplicationClass) getApplicationContext();
+        ttsSpeech = new TTSClass(applicationClass);
         currentLocation.setLatitude(currentLatitude);
         currentLocation.setLongitude(currentLongitude);
 

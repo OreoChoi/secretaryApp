@@ -20,10 +20,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.junho.secretaryapps.ApplicationClass;
 import com.example.junho.secretaryapps.ExeButtonAnim;
-import com.example.junho.secretaryapps.MemoDB;
+import com.example.junho.secretaryapps.memo.MemoDB;
 import com.example.junho.secretaryapps.R;
-import com.example.junho.secretaryapps.TTSSpeech;
+import com.example.junho.secretaryapps.TTSClass;
 import com.example.junho.secretaryapps.calculator.TouchCalculatorActivity;
 import com.example.junho.secretaryapps.map.MapActivity;
 import com.example.junho.secretaryapps.memo.MemoActivity;
@@ -39,15 +40,16 @@ public class RecognitionActivity extends AppCompatActivity {
     public static final int EMPTY = 0, SUM = 1, SUBTRACT = 2, DIVISION = 3, MULTIPLY = 4,
     MEMO_LIST = 5, MEMO = 6, MAP = 7, CALCULATOR = 8, MODE_CHANGE = 9, MODE_RETURN = 10;
 
-    TextView recognitionTxtView, titleTxtView;
+    TextView recognitionTxtView;
     ImageView exeImgView, exeRoundImgView;
     ListView memoList;
     MemoAdapter memoAdapter;
-    MemoDB db;
     Intent answerIntent;
     ExeButtonAnim exeButtonAnim;
     RecogAdapter recogAdapter;
-    TTSSpeech ttsSpeech;
+    ApplicationClass applicationClass;
+    TTSClass ttsSpeech;
+    MemoDB memoDB;
     RecogCalculator recogCalculator;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -59,16 +61,17 @@ public class RecognitionActivity extends AppCompatActivity {
         exeImgView = (ImageView) findViewById(R.id.exeImgView);
         exeRoundImgView = (ImageView) findViewById(R.id.exeRoundImgView);
         recognitionTxtView = (TextView) findViewById(R.id.recognitionTxtView);
-        titleTxtView = (TextView) findViewById(R.id.titleTxtView);
         exeButtonAnim = new ExeButtonAnim(this);
-        recogAdapter = new RecogAdapter(this, handler);
+        applicationClass = (ApplicationClass) getApplicationContext();
         memoList = (ListView) findViewById(R.id.listView);
         memoAdapter = new MemoAdapter(getApplicationContext());
         recogCalculator = new RecogCalculator();
-        db = new MemoDB(RecognitionActivity.this);
+        recogAdapter = new RecogAdapter(applicationClass, handler);
+        ttsSpeech = new TTSClass(applicationClass);
+        memoDB = new MemoDB(applicationClass);
 
         /* TTS 첫 실행을 위한 임시 스레드*/
-        ttsSpeech = new TTSSpeech(this);
+        applicationClass = (ApplicationClass)getApplicationContext();
         Thread ttsThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -113,9 +116,7 @@ public class RecognitionActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 handler.sendEmptyMessage(READY);
-                if(ttsSpeech == null) {
-                    ttsSpeech = new TTSSpeech(RecognitionActivity.this);
-                }
+
             }
         });
 
@@ -131,21 +132,13 @@ public class RecognitionActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        try {
-            ttsSpeech.ttsClear();
             recogAdapter.recogStopListen();
             recogAdapter.recogDestory();
-        }catch(NullPointerException e){
-            recogAdapter.recogStopListen();
-            recogAdapter.recogDestory();
-        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-            ttsSpeech.ttsClear();
-            ttsSpeech = null;
             recogAdapter.recogStopListen();
             recogAdapter.recogDestory();
     }
@@ -270,20 +263,20 @@ public class RecognitionActivity extends AppCompatActivity {
                     memoAdapter.notifyDataSetChanged();
                     memoList.setAdapter(memoAdapter);
                 } else if (resultCode == RESULT_CANCELED) {
-                    toast("메모를 취소하셨습니다.");
+                    applicationClass.toast("메모를 취소하셨습니다.");
                 }
                 break;
             case CALCULATE_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
-                    toast("계산기가 정상적으로 실행 되었습니다.");
+                    applicationClass.toast("계산기가 정상적으로 실행 되었습니다.");
                 } else if (resultCode == RESULT_CANCELED) {
-                    toast("계산을 취소하셨습니다.");
+                    applicationClass.toast("계산을 취소하셨습니다.");
                 }
                 break;
             case MAP_REQUEST_CODE:
                 break;
             default:
-                toast("잘못된 실행입니다.");
+                applicationClass.toast("잘못된 실행입니다.");
                 break;
         }
     }
@@ -307,11 +300,10 @@ public class RecognitionActivity extends AppCompatActivity {
     public void memoListView() {
         try {
             int lastIndex;
-            db.dbOpen();
-            lastIndex = db.lastIndex();
+            lastIndex = memoDB.lastIndex();
 
             for (int i = lastIndex; i >= 1; i--) {
-                Cursor cursor = db.listCursor("select * from memo where memoIndex = " + i);
+                Cursor cursor = memoDB.listCursor("select * from memo where memoIndex = " + i);
 
                 if (cursor.moveToFirst()) {
                     int memoIndex = cursor.getInt(0);
@@ -327,16 +319,10 @@ public class RecognitionActivity extends AppCompatActivity {
                 }
                 cursor.close();
             }
-            db.dbClose();
         } catch (SQLException e) {
             Log.d("STRING", "SQL ERROR");
         } catch (CursorIndexOutOfBoundsException e) {
             recognitionTxtView.setText("표시할 메모가 없습니다.");
         }
-    }
-
-    /* 토스트 메소드 */
-    public void toast(String str) {
-        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
     }
 }

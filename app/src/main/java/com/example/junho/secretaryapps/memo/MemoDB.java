@@ -1,23 +1,21 @@
-package com.example.junho.secretaryapps;
+package com.example.junho.secretaryapps.memo;
 
-import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import com.example.junho.secretaryapps.memo.BackColor;
-import static android.content.Context.MODE_PRIVATE;
 
-public class MemoDB {
+import com.example.junho.secretaryapps.ApplicationClass;
+
+public class MemoDB{
     private final String dbName = "secretary";
-    Activity activity;
+    ApplicationClass applicationClass;
     SQLiteDatabase sqliteDB;
 
-    public MemoDB(Activity activity) {
-        this.activity = activity;
+    public MemoDB(ApplicationClass applicationClass){
+        this.applicationClass = applicationClass;
+        sqliteDB = applicationClass.getSqliteDB();
     }
 
-    public void dbOpen(){
-        sqliteDB = activity.openOrCreateDatabase(dbName, MODE_PRIVATE, null);
-    }
+    /* DB 선언 영역 */
 
     public void dbClose(){
         sqliteDB.close();
@@ -62,3 +60,9 @@ public class MemoDB {
         return cursor;
     }
 }
+
+
+
+
+
+

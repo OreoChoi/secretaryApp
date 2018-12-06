@@ -13,8 +13,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.speech.RecognitionListener;
-import android.speech.SpeechRecognizer;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -26,20 +24,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.junho.secretaryapps.MemoDB;
+import com.example.junho.secretaryapps.ApplicationClass;
 import com.example.junho.secretaryapps.R;
-import com.example.junho.secretaryapps.TTSSpeech;
-import com.example.junho.secretaryapps.calculator.TouchCalculatorActivity;
+import com.example.junho.secretaryapps.TTSClass;
 import com.example.junho.secretaryapps.map.AddressSearch;
-import com.example.junho.secretaryapps.map.MapActivity;
 import com.example.junho.secretaryapps.map.MapLocation;
 import com.example.junho.secretaryapps.recognition.RecogAdapter;
-import com.example.junho.secretaryapps.recognition.Separation;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -82,11 +75,12 @@ public class MemoActivity extends AppCompatActivity {
     BackColor backColor;
     RecogAdapter recogAdapter;
     Intent reIntent, memoSetter;
-    TTSSpeech ttsSpeech;
-    MemoDB db;
+    ApplicationClass applicationClass;
+    TTSClass ttsSpeech;
     MemoAdapter memoAdapter;
     MapLocation gps;
     AddressSearch addressSearch;
+    MemoDB memoDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,16 +96,13 @@ public class MemoActivity extends AppCompatActivity {
         memoLayout = (LinearLayout) findViewById(R.id.memo_layout);
 
         /* Object 초기화 */
-        ttsSpeech = new TTSSpeech(this);
+        applicationClass = (ApplicationClass) getApplicationContext();
         reIntent = getIntent();
-        recogAdapter = new RecogAdapter(this, handler);
+        recogAdapter = new RecogAdapter(applicationClass, handler);
         memoAdapter = new MemoAdapter(getApplicationContext());
         addressSearch = new AddressSearch(this);
-
-        /* DB Open */
-        db = new MemoDB(MemoActivity.this);
-        db.dbOpen();
-        db.memoCreate();
+        ttsSpeech = new TTSClass(applicationClass);
+        memoDB = new MemoDB(applicationClass);
 
         /* Toolbar 셋팅 */
         toolbar.getNavigationIcon();
@@ -140,7 +131,6 @@ public class MemoActivity extends AppCompatActivity {
                 double latitude = gps.getLatitude();
                 double longitude = gps.getLongitude();
                 returnAddress = addressSearch.getAddress(latitude, longitude);
-                returnAddress = returnAddress.substring(0, returnAddress.indexOf("구") + 1);
                 currentLocationText.setText(returnAddress);
                 gps.stopUsingGPS();
 
@@ -177,8 +167,7 @@ public class MemoActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        db.dbClose();
-        ttsSpeech.ttsClear();
+        memoDB.dbClose();
     }
 
     /* Toolbar의 기능 정의 */
@@ -203,11 +192,11 @@ public class MemoActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (memoIndex > 0) {
-                            db.memoDelect(memoIndex);
+                            memoDB.memoDelect(memoIndex);
                             resultIntent(true);
                             finish();
                         } else {
-                            toast("아직 저장된 메모 아닙니다.");
+                            applicationClass.toast("아직 저장된 메모 아닙니다.");
                         }
                     }
                 });
@@ -403,10 +392,11 @@ public class MemoActivity extends AppCompatActivity {
             String c3 = contentText.getText().toString();
             String c4 = titleText.getText().toString();
             int c5 = backColor.getBackColor(backColor);
+            memoDB.memoCreate();
 
-            db.memoInsert(c1, c2, c3, c4, c5);
+            memoDB.memoInsert(c1, c2, c3, c4, c5);
 
-            toast("저장중...");
+            applicationClass.toast("저장중...");
             resultIntent(true);
 
         } catch (SQLException e) {
@@ -421,9 +411,9 @@ public class MemoActivity extends AppCompatActivity {
             String c2 = titleText.getText().toString();
             int c3 = backColor.getBackColor(backColor);
 
-            db.memoUpdate(index, c1, c2, c3);
+            memoDB.memoUpdate(index, c1, c2, c3);
 
-            toast("저장중...");
+            applicationClass.toast("저장중...");
             resultIntent(true);
         } catch (SQLException e) {
             resultIntent(false);
@@ -475,9 +465,4 @@ public class MemoActivity extends AppCompatActivity {
         }
         return null;
     }
-
-    public void toast(String str) {
-        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
-    }
-
 }
