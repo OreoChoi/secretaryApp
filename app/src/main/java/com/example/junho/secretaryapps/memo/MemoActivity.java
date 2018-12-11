@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.SQLException;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -47,18 +48,6 @@ import static com.example.junho.secretaryapps.recognition.RecognitionActivity.SE
 public class MemoActivity extends AppCompatActivity {
     /* Variable 선언 */
     private final int SPEECH = 99;
-    private final int BLACK_INT = Color.rgb(0, 0, 0),
-            WHITE_INT = Color.rgb(255, 255, 255),
-            PALE_GREEN_INT = Color.rgb(134, 229, 126),
-            YELLOW_INT = Color.rgb(250, 237, 125),
-            PALE_YELLOW_INT = Color.rgb(244, 244, 192),
-            APRICOT_INT = Color.rgb(255, 167, 167),
-            PINK_INT = Color.rgb(243, 97, 166),
-            PURPLE_INT = Color.rgb(217, 65, 197),
-            PALE_BLUE_INT = Color.rgb(178, 235, 244),
-            CYAN_INT = Color.rgb(0, 153, 153),
-            GRAY_INT = Color.rgb(234, 234, 234),
-            ORANGE_INT = Color.rgb(255, 130, 36);
     public static int flag = 0;
     int memoIndex = 0;
     String returnAddress;
@@ -103,6 +92,7 @@ public class MemoActivity extends AppCompatActivity {
         addressSearch = new AddressSearch(this);
         ttsSpeech = new TTSClass(applicationClass);
         memoDB = new MemoDB(applicationClass);
+        backColor = new BackColor(   );
 
         /* Toolbar 셋팅 */
         toolbar.getNavigationIcon();
@@ -123,7 +113,6 @@ public class MemoActivity extends AppCompatActivity {
             daysText.setText(memoSetter.getExtras().getString("date"));
             contentText.setText(memoSetter.getExtras().getString("content"));
             titleText.setText(memoSetter.getExtras().getString("title"));
-            backColor = setBackColor(memoSetter.getExtras().getInt("backColor"));
             memoLayout.setBackgroundColor(memoSetter.getExtras().getInt("backColor"));
         } else {
             gps = new MapLocation(this, this);
@@ -133,11 +122,10 @@ public class MemoActivity extends AppCompatActivity {
                 returnAddress = addressSearch.getAddress(latitude, longitude);
                 currentLocationText.setText(returnAddress);
                 gps.stopUsingGPS();
-
             } else {
                 currentLocationText.setText("주소 호출에 실패했습니다.");
             }
-            backColor = setBackColor(WHITE_INT);
+
             setCurrentDate();
 
             if (mode == STT_MODE_SWITCH) {
@@ -236,58 +224,47 @@ public class MemoActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         switch (view.getId()) {
                             case R.id.white_circle:
-                                backColor = BackColor.WHITE;
-                                memoLayout.setBackgroundColor(backColor.getBackColor(backColor));
+                                memoLayout.setBackgroundColor(backColor.getWHITE_INT());
                                 break;
                             case R.id.black_circle:
-                                backColor = BackColor.BLACK;
-                                memoLayout.setBackgroundColor(backColor.getBackColor(backColor));
-                                currentLocationText.setTextColor(Color.rgb(255, 255, 255));
-                                daysText.setTextColor(Color.rgb(255, 255, 255));
-                                contentText.setTextColor(Color.rgb(255, 255, 255));
-                                contentText.setHintTextColor(Color.rgb(255, 255, 255));
-                                titleText.setTextColor(Color.rgb(255, 255, 255));
-                                titleText.setHintTextColor(Color.rgb(255, 255, 255));
+                                int white = backColor.getWHITE_INT();
+                                memoLayout.setBackgroundColor(backColor.getBLACK_INT());
+                                currentLocationText.setTextColor(white);
+                                daysText.setTextColor(white);
+                                contentText.setTextColor(white);
+                                contentText.setHintTextColor(white);
+                                titleText.setTextColor(white);
+                                titleText.setHintTextColor(white);
                                 break;
                             case R.id.cyan_circle:
-                                backColor = BackColor.CYAN;
-                                memoLayout.setBackgroundColor(backColor.getBackColor(backColor));
+                                memoLayout.setBackgroundColor(backColor.getCYAN_INT());
                                 break;
                             case R.id.pale_blue_circle:
-                                backColor = BackColor.PALE_BLUE;
-                                memoLayout.setBackgroundColor(backColor.getBackColor(backColor));
+                                memoLayout.setBackgroundColor(backColor.getPALE_BLUE_INT());
                                 break;
                             case R.id.pale_green_circle:
-                                backColor = BackColor.PALE_GREEN;
-                                memoLayout.setBackgroundColor(backColor.getBackColor(backColor));
+                                memoLayout.setBackgroundColor(backColor.getPALE_GREEN_INT());
                                 break;
                             case R.id.pale_yellow_circle:
-                                backColor = BackColor.PALE_YELLOW;
-                                memoLayout.setBackgroundColor(backColor.getBackColor(backColor));
+                                memoLayout.setBackgroundColor(backColor.getPALE_YELLOW_INT());
                                 break;
                             case R.id.yellow_circle:
-                                backColor = BackColor.YELLOW;
-                                memoLayout.setBackgroundColor(backColor.getBackColor(backColor));
+                                memoLayout.setBackgroundColor(backColor.getYELLOW_INT());
                                 break;
                             case R.id.purple_circle:
-                                backColor = BackColor.PURPLE;
-                                memoLayout.setBackgroundColor(backColor.getBackColor(backColor));
+                                memoLayout.setBackgroundColor(backColor.getPURPLE_INT());
                                 break;
                             case R.id.gray_circle:
-                                backColor = BackColor.GRAY;
-                                memoLayout.setBackgroundColor(backColor.getBackColor(backColor));
+                                memoLayout.setBackgroundColor(backColor.getGRAY_INT());
                                 break;
                             case R.id.apricot_circle:
-                                backColor = BackColor.APRICOT;
-                                memoLayout.setBackgroundColor(backColor.getBackColor(backColor));
+                                memoLayout.setBackgroundColor(backColor.getAPRICOT_INT());
                                 break;
                             case R.id.orange_circle:
-                                backColor = BackColor.ORANGE;
-                                memoLayout.setBackgroundColor(backColor.getBackColor(backColor));
+                                memoLayout.setBackgroundColor(backColor.getORANGE_INT());
                                 break;
                             case R.id.pink_circle:
-                                backColor = BackColor.PINK;
-                                memoLayout.setBackgroundColor(backColor.getBackColor(backColor));
+                                memoLayout.setBackgroundColor(backColor.getPINK_INT());
                                 break;
                         }
                     }
@@ -391,7 +368,9 @@ public class MemoActivity extends AppCompatActivity {
             String c2 = daysText.getText().toString();
             String c3 = contentText.getText().toString();
             String c4 = titleText.getText().toString();
-            int c5 = backColor.getBackColor(backColor);
+
+            ColorDrawable color = (ColorDrawable) memoLayout.getBackground();
+            int c5 = color.getColor();
             memoDB.memoCreate();
 
             memoDB.memoInsert(c1, c2, c3, c4, c5);
@@ -409,7 +388,8 @@ public class MemoActivity extends AppCompatActivity {
         try {
             String c1 = contentText.getText().toString();
             String c2 = titleText.getText().toString();
-            int c3 = backColor.getBackColor(backColor);
+            ColorDrawable color = (ColorDrawable) memoLayout.getBackground();
+            int c3 = color.getColor();
 
             memoDB.memoUpdate(index, c1, c2, c3);
 
@@ -435,34 +415,5 @@ public class MemoActivity extends AppCompatActivity {
         ClipboardManager clipboardManager = (ClipboardManager) context.getSystemService(context.CLIPBOARD_SERVICE);
         ClipData clipData = ClipData.newPlainText("label", s);
         clipboardManager.setPrimaryClip(clipData);
-    }
-
-    public BackColor setBackColor(int backColor) {
-        if (backColor == BLACK_INT) {
-            return BackColor.BLACK;
-        } else if (backColor == WHITE_INT) {
-            return BackColor.WHITE;
-        } else if (backColor == PALE_GREEN_INT) {
-            return BackColor.PALE_GREEN;
-        } else if (backColor == YELLOW_INT) {
-            return BackColor.YELLOW;
-        } else if (backColor == PALE_YELLOW_INT) {
-            return BackColor.PALE_YELLOW;
-        } else if (backColor == APRICOT_INT) {
-            return BackColor.APRICOT;
-        } else if (backColor == PINK_INT) {
-            return BackColor.PINK;
-        } else if (backColor == PURPLE_INT) {
-            return BackColor.PURPLE;
-        } else if (backColor == PALE_BLUE_INT) {
-            return BackColor.PALE_BLUE;
-        } else if (backColor == CYAN_INT) {
-            return BackColor.CYAN;
-        } else if (backColor == GRAY_INT) {
-            return BackColor.GRAY;
-        } else if (backColor == ORANGE_INT) {
-            return BackColor.ORANGE;
-        }
-        return null;
     }
 }

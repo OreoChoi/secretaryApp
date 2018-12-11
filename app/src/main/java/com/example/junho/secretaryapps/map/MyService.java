@@ -124,7 +124,7 @@ public class MyService extends Service implements LocationListener, Serializable
     /* 목적지 위도값 반환 */
     public double getDestLatitude() {
         if (destLocation != null) {
-            destLatitude= destLocation.getLatitude();
+            destLatitude = destLocation.getLatitude();
         }
         return destLatitude;
     }
@@ -263,12 +263,12 @@ public class MyService extends Service implements LocationListener, Serializable
     public void onLocationChanged(Location location) {
         double currentLatitude = location.getLatitude();
         double currentLongitude = location.getLongitude();
-        applicationClass = (ApplicationClass) getApplicationContext();
-        ttsSpeech = new TTSClass(applicationClass);
-        currentLocation.setLatitude(currentLatitude);
-        currentLocation.setLongitude(currentLongitude);
-
         try {
+            applicationClass = (ApplicationClass) getApplicationContext();
+            ttsSpeech = new TTSClass(applicationClass);
+            currentLocation.setLatitude(currentLatitude);
+            currentLocation.setLongitude(currentLongitude);
+
             double totalDistance = currentLocation.distanceTo(destLocation);  //현재 위치
             double remainingDistance = totalDistance - alarmRingDistance; // 남은거리 = 현위치 - 알람이 울릴 위치
 
@@ -300,7 +300,6 @@ public class MyService extends Service implements LocationListener, Serializable
         } catch (NullPointerException e) {
             Log.d(TAG, e + " : NullpointException");
         }
-
         currentMapCenterPrint(currentLatitude, currentLongitude);
     }
 
@@ -315,7 +314,7 @@ public class MyService extends Service implements LocationListener, Serializable
                     break;
                 case 1:
                     builder.setContentText("거리에 도달했습니다.");
-                    notificationManager.notify(1,builder.build());
+                    notificationManager.notify(1, builder.build());
                     break;
             }
         }
